@@ -1,0 +1,22 @@
+{
+  "network": {
+    "rpc": "https://sepolia.base.org",
+    "chainId": 84532,
+    "name": "Base Sepolia"
+  },
+  "contracts": {
+    "vault": "0xe631fA4D466763bC8fE367ccafBaE2747505179d",
+    "usdc": "0x036CbD53842c5426634e7929541eC2318f3dCF7e"
+  },
+  "agent": {
+    "wallet": "0x7FE0CBB94B356C0e49763C303Fb9BC88FC968A67",
+    "minIdleUSDC": 1000000,
+    "depositThreshold": 5000000,
+    "checkIntervalMs": 30000
+  },
+  "alerts": {
+    "lowBalance": 1000000,
+    "largeDeposit": 100000000,
+    "largeWithdraw": 50000000
+  }
+}

@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>USDC Vault - Agent-Managed DeFi</title>
+    <meta charset="utf-8">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono&display=swap');
+        
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a0a;
+            color: #fff;
+            overflow: hidden;
+        }
+        
+        .slide {
+            display: none;
+            width: 100vw;
+            height: 100vh;
+            padding: 60px 80px;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .slide.active { display: flex; }
+        
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #2775CA 0%, #00D4FF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        h2 {
+            font-size: 1.8rem;
+            font-weight: 400;
+            color: #888;
+            margin-bottom: 2rem;
+        }
+        
+        h3 {
+            font-size: 2rem;
+            margin: 2rem 0 1rem;
+            color: #2775CA;
+        }
+        
+        p, li {
+            font-size: 1.4rem;
+            line-height: 1.8;
+            color: #ccc;
+        }
+        
+        ul { margin-left: 2rem; }
+        li { margin: 0.5rem 0; }
+        
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: #1a1a1a;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+        
+        pre {
+            background: #111;
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 24px;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+        
+        pre code {
+            background: none;
+            padding: 0;
+            font-size: 1rem;
+            color: #0f0;
+        }
+        
+        .highlight { color: #2775CA; }
+        
+        table {
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            width: 100%;
+            max-width: 800px;
+        }
+        
+        th, td {
+            padding: 12px 20px;
+            text-align: left;
+            border-bottom: 1px solid #333;
+            font-size: 1.2rem;
+        }
+        
+        th { color: #2775CA; font-weight: 600; }
+        
+        .center { text-align: center; }
+        
+        .diagram {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1rem;
+            color: #0f0;
+            line-height: 1.4;
+        }
+        
+        .emoji { font-size: 2rem; margin-right: 0.5rem; }
+        
+        .nav {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .nav button {
+            background: #2775CA;
+            color: #fff;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+        
+        .nav button:hover { background: #1a5a9e; }
+        
+        .progress {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            height: 4px;
+            background: #2775CA;
+            transition: width 0.3s;
+        }
+        
+        .slide-num {
+            position: fixed;
+            bottom: 35px;
+            left: 30px;
+            color: #555;
+            font-size: 1rem;
+        }
+        
+        a { color: #00D4FF; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 2rem;
+        }
+        
+        .card {
+            background: #111;
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 24px;
+        }
+        
+        .big-emoji {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Slide 1: Title -->
+    <div class="slide active">
+        <h1>USDC Vault</h1>
+        <h2>Agent-Managed DeFi on Base</h2>
+        <p style="margin-top: 2rem; font-size: 1.2rem;">
+            Autonomous yield optimization powered by AI agents
+        </p>
+        <p style="margin-top: 4rem; color: #555;">
+            USDC Hackathon 2026
+        </p>
+    </div>
+
+    <!-- Slide 2: Problem -->
+    <div class="slide">
+        <div class="big-emoji">🤔</div>
+        <h1>The Problem</h1>
+        <h3>Idle USDC earns nothing</h3>
+        <ul style="margin-top: 2rem;">
+            <li>Users forget to deposit into yield protocols</li>
+            <li>Manual management is time-consuming</li>
+            <li>Missed opportunities while you sleep</li>
+            <li>Complexity keeps people from optimizing</li>
+        </ul>
+    </div>
+
+    <!-- Slide 3: Solution -->
+    <div class="slide">
+        <div class="big-emoji">💡</div>
+        <h1>The Solution</h1>
+        <h3>AI agents manage your USDC autonomously</h3>
+        <ul style="margin-top: 2rem;">
+            <li>Auto-detect idle balances</li>
+            <li>Deposit into yield vaults automatically</li>
+            <li>24/7 operation, no human needed</li>
+            <li>Configurable thresholds</li>
+        </ul>
+    </div>
+
+    <!-- Slide 4: How It Works -->
+    <div class="slide">
+        <h1>How It Works</h1>
+        <pre><code class="diagram">┌──────────────┐     ┌──────────────┐
+│  Your Wallet │────▶│  USDC Vault  │
+│   (USDC)     │     │  (svUSDC)    │
+└──────────────┘     └──────────────┘
+       ▲                    │
+       │    ┌───────────┐   │
+       └────│ AI Agent  │◀──┘
+            │ (Clawd)   │
+            └───────────┘</code></pre>
+        <ol style="margin-top: 1rem;">
+            <li>Agent monitors wallet balance</li>
+            <li>Detects idle USDC above threshold</li>
+            <li>Auto-deposits into vault</li>
+            <li>You earn yield while sleeping</li>
+        </ol>
+    </div>
+
+    <!-- Slide 5: Tech Stack -->
+    <div class="slide">
+        <h1>Tech Stack</h1>
+        <table>
+            <tr><th>Layer</th><th>Technology</th></tr>
+            <tr><td>Smart Contract</td><td>Solidity, ERC-4626</td></tr>
+            <tr><td>Framework</td><td>Foundry</td></tr>
+            <tr><td>Network</td><td>Base Sepolia</td></tr>
+            <tr><td>Agent</td><td>Clawdbot (AI)</td></tr>
+            <tr><td>Token</td><td>Circle USDC</td></tr>
+        </table>
+    </div>
+
+    <!-- Slide 6: Smart Contract -->
+    <div class="slide">
+        <h1>Smart Contract</h1>
+        <p>SimpleUSDCVault.sol - ERC-4626 Compliant</p>
+        <pre><code>contract SimpleUSDCVault is ERC4626 {
+    IERC20 public constant USDC = 
+        IERC20(0x036CbD53842c5426634e7929541eC2318f3dCF7e);
+
+    constructor() 
+        ERC4626(USDC) 
+        ERC20("Simple Vault USDC", "svUSDC") {}
+
+    function totalAssets() public view override 
+        returns (uint256) {
+        return USDC.balanceOf(address(this));
+    }
+}</code></pre>
+        <p style="margin-top: 1rem;">✅ Simple, auditable, secure</p>
+    </div>
+
+    <!-- Slide 7: Agent Scripts -->
+    <div class="slide">
+        <h1>Agent Scripts</h1>
+        <pre><code>agent/
+├── monitor.sh      # Dashboard view
+├── status.sh       # JSON for automation
+├── deposit.sh      # Manual deposit
+├── withdraw.sh     # Manual withdraw
+└── auto-deposit.sh # 🤖 Autonomous daemon</code></pre>
+        <h3>Auto-deposit daemon runs 24/7:</h3>
+        <ul>
+            <li>Checks wallet every 30 seconds</li>
+            <li>Deposits when balance > 5 USDC</li>
+            <li>Keeps 1 USDC buffer for gas</li>
+        </ul>
+    </div>
+
+    <!-- Slide 8: Live Demo -->
+    <div class="slide">
+        <h1>Live Demo 🎬</h1>
+        <h3>Deployed Contract</h3>
+        <p><code>0xe631fA4D466763bC8fE367ccafBaE2747505179d</code></p>
+        <table style="margin-top: 2rem;">
+            <tr><th>Metric</th><th>Value</th></tr>
+            <tr><td>Vault Balance</td><td>10 USDC</td></tr>
+            <tr><td>Shares Minted</td><td>10 svUSDC</td></tr>
+            <tr><td>Share Price</td><td>1.0 USDC</td></tr>
+        </table>
+        <p style="margin-top: 2rem;">
+            <a href="https://sepolia.basescan.org/address/0xe631fA4D466763bC8fE367ccafBaE2747505179d" target="_blank">
+                View on BaseScan →
+            </a>
+        </p>
+    </div>
+
+    <!-- Slide 9: Agent in Action -->
+    <div class="slide">
+        <h1>Agent in Action</h1>
+        <pre><code>╔═══════════════════════════════════════════╗
+║   USDC Vault Auto-Deposit Agent Started   ║
+╠═══════════════════════════════════════════╣
+║  Threshold: 5.00 USDC                     ║
+║  Min Idle:  1.00 USDC                     ║
+╚═══════════════════════════════════════════╝
+
+[06:55:01] Wallet USDC: 2.50 ✓
+[06:55:31] Wallet USDC: 2.50 ✓
+[06:56:01] Wallet USDC: 12.00 
+[06:56:01] ⚡ Auto-depositing 11.00 USDC...
+[06:56:05] ✓ Deposited! TX: 0x7a3f...</code></pre>
+    </div>
+
+    <!-- Slide 10: Why ERC-4626 -->
+    <div class="slide">
+        <h1>Why ERC-4626?</h1>
+        <h2>The "Tokenized Vault Standard"</h2>
+        <ul style="margin-top: 2rem;">
+            <li>✅ Composable with other DeFi</li>
+            <li>✅ Standard interface (deposit/withdraw/redeem)</li>
+            <li>✅ Share-based accounting</li>
+            <li>✅ Easy integration for agents</li>
+            <li>✅ Battle-tested pattern</li>
+        </ul>
+    </div>
+
+    <!-- Slide 11: Roadmap -->
+    <div class="slide">
+        <h1>Roadmap 🚀</h1>
+        <div class="two-col">
+            <div class="card">
+                <h3>Phase 1 (Now)</h3>
+                <ul>
+                    <li>✅ Basic vault on testnet</li>
+                    <li>✅ Agent auto-deposit</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>Phase 2</h3>
+                <ul>
+                    <li>Aave/Compound yield</li>
+                    <li>Multi-strategy optimization</li>
+                    <li>APY monitoring</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>Phase 3</h3>
+                <ul>
+                    <li>Cross-chain deposits</li>
+                    <li>Risk-adjusted allocation</li>
+                    <li>DAO governance</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 12: Security -->
+    <div class="slide">
+        <div class="big-emoji">🔒</div>
+        <h1>Security</h1>
+        <ul style="margin-top: 2rem;">
+            <li><strong>No admin keys</strong> - Fully permissionless</li>
+            <li><strong>ERC-4626 standard</strong> - Well-audited pattern</li>
+            <li><strong>Simple code</strong> - Easy to verify</li>
+            <li><strong>Open source</strong> - Full transparency</li>
+            <li><strong>Verified on Sourcify</strong> ✅</li>
+        </ul>
+    </div>
+
+    <!-- Slide 13: Team -->
+    <div class="slide">
+        <h1>Team</h1>
+        <h2>Built by AI + Human collaboration</h2>
+        <div class="two-col" style="margin-top: 2rem;">
+            <div class="card center">
+                <div class="big-emoji">🤖</div>
+                <h3>Clawdbot</h3>
+                <p>AI coding agent</p>
+            </div>
+            <div class="card center">
+                <div class="big-emoji">👤</div>
+                <h3>Aregus</h3>
+                <p>Human guidance</p>
+            </div>
+        </div>
+        <p style="margin-top: 2rem; text-align: center; color: #888;">
+            Demonstrating the future of development:<br>
+            <em>Humans direct, AI executes</em>
+        </p>
+    </div>
+
+    <!-- Slide 14: Thank You -->
+    <div class="slide center">
+        <div class="big-emoji">🙏</div>
+        <h1>Thank You!</h1>
+        <h2>Questions?</h2>
+        <p style="margin-top: 3rem;">
+            <a href="https://sepolia.basescan.org/address/0xe631fA4D466763bC8fE367ccafBaE2747505179d">
+                Contract on BaseScan
+            </a>
+        </p>
+        <p style="margin-top: 4rem; color: #555;">
+            Built for the USDC Hackathon 🏆
+        </p>
+    </div>
+
+    <!-- Navigation -->
+    <div class="nav">
+        <button onclick="prevSlide()">← Prev</button>
+        <button onclick="nextSlide()">Next →</button>
+    </div>
+    <div class="progress" id="progress"></div>
+    <div class="slide-num" id="slideNum"></div>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        let current = 0;
+
+        function showSlide(n) {
+            slides[current].classList.remove('active');
+            current = (n + slides.length) % slides.length;
+            slides[current].classList.add('active');
+            document.getElementById('progress').style.width = 
+                ((current + 1) / slides.length * 100) + '%';
+            document.getElementById('slideNum').textContent = 
+                (current + 1) + ' / ' + slides.length;
+        }
+
+        function nextSlide() { showSlide(current + 1); }
+        function prevSlide() { showSlide(current - 1); }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') nextSlide();
+            if (e.key === 'ArrowLeft') prevSlide();
+        });
+
+        showSlide(0);
+    </script>
+</body>
+</html>
